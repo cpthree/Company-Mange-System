@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ms.dao.SendfileMapper" >
+
+  <!--公共表-->
+  <sql id="rootsql">
+    select a.*,
+    b.id did,b.department_name ddepartment_name
+    from sendfile a
+    left join department b
+    on a.department_id = b.id
+  </sql>
+
+  <resultMap id="sendfile_department" type="com.ms.entity.Sendfile" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="file_name" property="fileName" jdbcType="VARCHAR" />
+    <result column="sender" property="sender" jdbcType="VARCHAR" />
+    <result column="department_id" property="departmentId" jdbcType="BIGINT" />
+    <result column="send_date" property="sendDate" jdbcType="TIMESTAMP" />
+    <result column="edit_date" property="editDate" jdbcType="TIMESTAMP" />
+
+
+    <association property="department" javaType="com.ms.entity.Department">
+      <id column="did" property="id" jdbcType="INTEGER" />
+      <result column="ddepartment_name" property="departmentName" jdbcType="VARCHAR" />
+    </association>
+
+  </resultMap>
+
+  <!--发文部管理主页-->
+  <select id="selectSendfile" resultMap="sendfile_department" >
+    <include refid="rootsql"></include>
+  </select>
+
+
+
+  <resultMap id="BaseResultMap" type="com.ms.entity.Sendfile" >
+    <constructor >
+      <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="file_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="sender" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="department_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="send_date" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="edit_date" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, file_name, sender, department_id, send_date, edit_date
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ms.entity.SendfileExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sendfile
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from sendfile
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sendfile
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ms.entity.SendfileExample" >
+    delete from sendfile
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ms.entity.Sendfile" >
+    insert into sendfile (id, file_name, sender, 
+      department_id, send_date, edit_date
+      )
+    values (#{id,jdbcType=BIGINT}, #{fileName,jdbcType=VARCHAR}, #{sender,jdbcType=VARCHAR}, 
+      #{departmentId,jdbcType=BIGINT}, #{sendDate,jdbcType=TIMESTAMP}, #{editDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ms.entity.Sendfile" >
+    insert into sendfile
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="fileName != null" >
+        file_name,
+      </if>
+      <if test="sender != null" >
+        sender,
+      </if>
+      <if test="departmentId != null" >
+        department_id,
+      </if>
+      <if test="sendDate != null" >
+        send_date,
+      </if>
+      <if test="editDate != null" >
+        edit_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="fileName != null" >
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="sender != null" >
+        #{sender,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentId != null" >
+        #{departmentId,jdbcType=BIGINT},
+      </if>
+      <if test="sendDate != null" >
+        #{sendDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editDate != null" >
+        #{editDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ms.entity.SendfileExample" resultType="java.lang.Integer" >
+    select count(*) from sendfile
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update sendfile
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.fileName != null" >
+        file_name = #{record.fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sender != null" >
+        sender = #{record.sender,jdbcType=VARCHAR},
+      </if>
+      <if test="record.departmentId != null" >
+        department_id = #{record.departmentId,jdbcType=BIGINT},
+      </if>
+      <if test="record.sendDate != null" >
+        send_date = #{record.sendDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.editDate != null" >
+        edit_date = #{record.editDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update sendfile
+    set id = #{record.id,jdbcType=BIGINT},
+      file_name = #{record.fileName,jdbcType=VARCHAR},
+      sender = #{record.sender,jdbcType=VARCHAR},
+      department_id = #{record.departmentId,jdbcType=BIGINT},
+      send_date = #{record.sendDate,jdbcType=TIMESTAMP},
+      edit_date = #{record.editDate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ms.entity.Sendfile" >
+    update sendfile
+    <set >
+      <if test="fileName != null" >
+        file_name = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="sender != null" >
+        sender = #{sender,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentId != null" >
+        department_id = #{departmentId,jdbcType=BIGINT},
+      </if>
+      <if test="sendDate != null" >
+        send_date = #{sendDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editDate != null" >
+        edit_date = #{editDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ms.entity.Sendfile" >
+    update sendfile
+    set file_name = #{fileName,jdbcType=VARCHAR},
+      sender = #{sender,jdbcType=VARCHAR},
+      department_id = #{departmentId,jdbcType=BIGINT},
+      send_date = #{sendDate,jdbcType=TIMESTAMP},
+      edit_date = #{editDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

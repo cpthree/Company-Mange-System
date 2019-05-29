@@ -1,0 +1,51 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <artifactId>ms_parent</artifactId>
+        <groupId>com.ms</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>ms_web</artifactId>
+    <packaging>war</packaging>
+    <name>ms_web Maven Webapp</name>
+    <url>http://maven.apache.org</url>
+    <dependencies>
+        <dependency>
+            <groupId>com.ms</groupId>
+            <artifactId>ms_service</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <finalName>ms_web</finalName>
+
+        <resources>
+            <!--引入映射文件  xxxMapper.xml-->
+            <resource>
+                <directory>../ms_dao/src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+            <!--引入web模块下resources文件夹下的文件-->
+            <resource>
+                <directory>../ms_service/src/main/java</directory>
+            </resource>
+            <resource>
+                <directory>../ms_dao/src/main/java</directory>
+            </resource>
+            <resource>
+                <directory>../ms_entity/src/main/java</directory>
+            </resource>
+            <resource>
+                <directory>../ms_utils/src/main/java</directory>
+            </resource>
+            <resource>
+                <directory>/src/main/java</directory>
+            </resource>
+        </resources>
+
+    </build>
+</project>

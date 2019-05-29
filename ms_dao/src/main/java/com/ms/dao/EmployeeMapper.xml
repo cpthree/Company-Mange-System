@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ms.dao.EmployeeMapper" >
+
+  <!--公共表-->
+  <sql id="rootsql">
+    select a.*,
+    b.id did,b.department_name ddepartment_name,
+    c.id rid,c.role_name rrole_name
+    from employee a
+    left join department b
+    on a.department_id = b.id
+    left join role c
+    on a.role_id = c.id
+  </sql>
+
+  <resultMap id="employee_department_role" type="com.ms.entity.Employee" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="login_name" property="loginName" jdbcType="VARCHAR" />
+    <result column="login_password" property="loginPassword" jdbcType="VARCHAR" />
+    <result column="real_name" property="realName" jdbcType="VARCHAR" />
+    <result column="sex_id" property="sexId" jdbcType="INTEGER" />
+    <result column="department_id" property="departmentId" jdbcType="INTEGER" />
+    <result column="role_id" property="roleId" jdbcType="INTEGER" />
+    <result column="telephone" property="telephone" jdbcType="BIGINT" />
+    <result column="birth_date" property="birthDate" jdbcType="TIMESTAMP" />
+    <result column="entry_date" property="entryDate" jdbcType="TIMESTAMP" />
+
+
+    <association property="department" javaType="com.ms.entity.Department">
+      <id column="did" property="id" jdbcType="BIGINT" />
+      <result column="ddepartment_name" property="departmentName" jdbcType="VARCHAR" />
+    </association>
+
+    <association property="role" javaType="com.ms.entity.Role">
+      <id column="rid" property="id" jdbcType="BIGINT" />
+      <result column="rrole_name" property="roleName" jdbcType="VARCHAR" />
+    </association>
+  </resultMap>
+
+  <!--登录验证-->
+  <select id="selectByUsernameAndPassword" resultMap="employee_department_role" >
+    <include refid="rootsql"></include>
+    where  login_name=#{0} and  login_password=#{1}
+  </select>
+
+  <!--人事部管理主页-->
+  <select id="selectEmployee" resultMap="employee_department_role" >
+    <include refid="rootsql"></include>
+  </select>
+
+  <select id="searchByRealName" parameterType="string" resultMap="employee_department_role">
+    <include refid="rootsql"></include> where real_name like '%${realName}%'
+  </select>
+
+  <select id="selectEmployeeByDepartment" parameterType="long" resultMap="employee_department_role" >
+    <include refid="rootsql"></include> where b.id=#{id}
+  </select>
+
+
+
+
+
+
+  <!--old-->
+
+
+
+
+  <resultMap id="BaseResultMap" type="com.ms.entity.Employee" >
+    <constructor >
+      <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="login_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="login_password" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="real_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="sex_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="department_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="role_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="telephone" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="birth_date" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="entry_date" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, login_name, login_password, real_name, sex_id, department_id, role_id, telephone, 
+    birth_date, entry_date
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ms.entity.EmployeeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from employee
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from employee
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from employee
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ms.entity.EmployeeExample" >
+    delete from employee
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ms.entity.Employee" >
+    insert into employee (id, login_name, login_password, 
+      real_name, sex_id, department_id, 
+      role_id, telephone, birth_date, 
+      entry_date)
+    values (#{id,jdbcType=BIGINT}, #{loginName,jdbcType=VARCHAR}, #{loginPassword,jdbcType=VARCHAR}, 
+      #{realName,jdbcType=VARCHAR}, #{sexId,jdbcType=INTEGER}, #{departmentId,jdbcType=INTEGER}, 
+      #{roleId,jdbcType=INTEGER}, #{telephone,jdbcType=BIGINT}, #{birthDate,jdbcType=TIMESTAMP}, 
+      #{entryDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ms.entity.Employee" >
+    insert into employee
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="loginName != null" >
+        login_name,
+      </if>
+      <if test="loginPassword != null" >
+        login_password,
+      </if>
+      <if test="realName != null" >
+        real_name,
+      </if>
+      <if test="sexId != null" >
+        sex_id,
+      </if>
+      <if test="departmentId != null" >
+        department_id,
+      </if>
+      <if test="roleId != null" >
+        role_id,
+      </if>
+      <if test="telephone != null" >
+        telephone,
+      </if>
+      <if test="birthDate != null" >
+        birth_date,
+      </if>
+      <if test="entryDate != null" >
+        entry_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="loginName != null" >
+        #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="loginPassword != null" >
+        #{loginPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null" >
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="sexId != null" >
+        #{sexId,jdbcType=INTEGER},
+      </if>
+      <if test="departmentId != null" >
+        #{departmentId,jdbcType=INTEGER},
+      </if>
+      <if test="roleId != null" >
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="telephone != null" >
+        #{telephone,jdbcType=BIGINT},
+      </if>
+      <if test="birthDate != null" >
+        #{birthDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="entryDate != null" >
+        #{entryDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ms.entity.EmployeeExample" resultType="java.lang.Integer" >
+    select count(*) from employee
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update employee
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.loginName != null" >
+        login_name = #{record.loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loginPassword != null" >
+        login_password = #{record.loginPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.realName != null" >
+        real_name = #{record.realName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sexId != null" >
+        sex_id = #{record.sexId,jdbcType=INTEGER},
+      </if>
+      <if test="record.departmentId != null" >
+        department_id = #{record.departmentId,jdbcType=INTEGER},
+      </if>
+      <if test="record.roleId != null" >
+        role_id = #{record.roleId,jdbcType=INTEGER},
+      </if>
+      <if test="record.telephone != null" >
+        telephone = #{record.telephone,jdbcType=BIGINT},
+      </if>
+      <if test="record.birthDate != null" >
+        birth_date = #{record.birthDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.entryDate != null" >
+        entry_date = #{record.entryDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update employee
+    set id = #{record.id,jdbcType=BIGINT},
+      login_name = #{record.loginName,jdbcType=VARCHAR},
+      login_password = #{record.loginPassword,jdbcType=VARCHAR},
+      real_name = #{record.realName,jdbcType=VARCHAR},
+      sex_id = #{record.sexId,jdbcType=INTEGER},
+      department_id = #{record.departmentId,jdbcType=INTEGER},
+      role_id = #{record.roleId,jdbcType=INTEGER},
+      telephone = #{record.telephone,jdbcType=BIGINT},
+      birth_date = #{record.birthDate,jdbcType=TIMESTAMP},
+      entry_date = #{record.entryDate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ms.entity.Employee" >
+    update employee
+    <set >
+      <if test="loginName != null" >
+        login_name = #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="loginPassword != null" >
+        login_password = #{loginPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null" >
+        real_name = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="sexId != null" >
+        sex_id = #{sexId,jdbcType=INTEGER},
+      </if>
+      <if test="departmentId != null" >
+        department_id = #{departmentId,jdbcType=INTEGER},
+      </if>
+      <if test="roleId != null" >
+        role_id = #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="telephone != null" >
+        telephone = #{telephone,jdbcType=BIGINT},
+      </if>
+      <if test="birthDate != null" >
+        birth_date = #{birthDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="entryDate != null" >
+        entry_date = #{entryDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ms.entity.Employee" >
+    update employee
+    set login_name = #{loginName,jdbcType=VARCHAR},
+      login_password = #{loginPassword,jdbcType=VARCHAR},
+      real_name = #{realName,jdbcType=VARCHAR},
+      sex_id = #{sexId,jdbcType=INTEGER},
+      department_id = #{departmentId,jdbcType=INTEGER},
+      role_id = #{roleId,jdbcType=INTEGER},
+      telephone = #{telephone,jdbcType=BIGINT},
+      birth_date = #{birthDate,jdbcType=TIMESTAMP},
+      entry_date = #{entryDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,81 @@
+
+.auth_bg {
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    z-index: -1;
+}
+.auth_bg img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    min-width: 50%;
+    min-height: 50%;
+}
+
+.auth_page_wrapper {
+    width: 960px;
+    margin: 20px auto;
+    padding: 0;
+    font-family: 'Microsoft YaHei';
+    font-size: 13px;
+    color: #676A6C;
+}
+
+.auth_login_footer {
+    width: 100%;
+    margin-top: 100px;
+    text-align: center;
+}
+.auth_login_footer span {
+    color: #f3f3f3;
+    font-size: 12px;
+}
+
+.auth_login_content {
+    margin-top: 100px;
+    height: 400px;
+}
+.auth_login_content .auth_login_right {
+    width: 50%;
+    float: right;
+}
+.auth_login_left .auth_others ul, .auth_tab_links ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.auth_tab {
+    width: 339px;
+    margin-left: 125px;
+}
+.auth_tab_links li {
+    width: 50%;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    display: block;
+    float: left;
+    background-color: rgba(138, 138, 137, .8);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#998A8A89, endColorstr=#998A8A89);
+    cursor: pointer;
+}
+.auth_tab_links li.selected {
+    background-color: rgba(0, 0, 0, .3);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#E5ffffff, endColorstr=#E5ffffff);
+}
+.auth_tab_content {
+    padding: 25px 35px 22px 35px;
+    background-color: rgba(0, 0, 0, .3);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#E5ffffff, endColorstr=#E5ffffff);
+    min-height: 205px;
+}
+
+
+

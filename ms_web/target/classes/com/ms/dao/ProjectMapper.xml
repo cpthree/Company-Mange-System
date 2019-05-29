@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ms.dao.ProjectMapper" >
+  <resultMap id="BaseResultMap" type="com.ms.entity.Project" >
+    <constructor >
+      <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="project_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="location" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="land_area" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="build_area" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="floor" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="eia_people" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="permit" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="audit_flag" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="success_date" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, project_name, location, land_area, build_area, floor, eia_people, permit, audit_flag, 
+    success_date
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ms.entity.ProjectExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from project
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from project
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from project
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ms.entity.ProjectExample" >
+    delete from project
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ms.entity.Project" >
+    insert into project (id, project_name, location, 
+      land_area, build_area, floor, 
+      eia_people, permit, audit_flag, 
+      success_date)
+    values (#{id,jdbcType=BIGINT}, #{projectName,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, 
+      #{landArea,jdbcType=BIGINT}, #{buildArea,jdbcType=BIGINT}, #{floor,jdbcType=INTEGER}, 
+      #{eiaPeople,jdbcType=VARCHAR}, #{permit,jdbcType=VARCHAR}, #{auditFlag,jdbcType=INTEGER}, 
+      #{successDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ms.entity.Project" >
+    insert into project
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="projectName != null" >
+        project_name,
+      </if>
+      <if test="location != null" >
+        location,
+      </if>
+      <if test="landArea != null" >
+        land_area,
+      </if>
+      <if test="buildArea != null" >
+        build_area,
+      </if>
+      <if test="floor != null" >
+        floor,
+      </if>
+      <if test="eiaPeople != null" >
+        eia_people,
+      </if>
+      <if test="permit != null" >
+        permit,
+      </if>
+      <if test="auditFlag != null" >
+        audit_flag,
+      </if>
+      <if test="successDate != null" >
+        success_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="projectName != null" >
+        #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null" >
+        #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="landArea != null" >
+        #{landArea,jdbcType=BIGINT},
+      </if>
+      <if test="buildArea != null" >
+        #{buildArea,jdbcType=BIGINT},
+      </if>
+      <if test="floor != null" >
+        #{floor,jdbcType=INTEGER},
+      </if>
+      <if test="eiaPeople != null" >
+        #{eiaPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="permit != null" >
+        #{permit,jdbcType=VARCHAR},
+      </if>
+      <if test="auditFlag != null" >
+        #{auditFlag,jdbcType=INTEGER},
+      </if>
+      <if test="successDate != null" >
+        #{successDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ms.entity.ProjectExample" resultType="java.lang.Integer" >
+    select count(*) from project
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update project
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.projectName != null" >
+        project_name = #{record.projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.location != null" >
+        location = #{record.location,jdbcType=VARCHAR},
+      </if>
+      <if test="record.landArea != null" >
+        land_area = #{record.landArea,jdbcType=BIGINT},
+      </if>
+      <if test="record.buildArea != null" >
+        build_area = #{record.buildArea,jdbcType=BIGINT},
+      </if>
+      <if test="record.floor != null" >
+        floor = #{record.floor,jdbcType=INTEGER},
+      </if>
+      <if test="record.eiaPeople != null" >
+        eia_people = #{record.eiaPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="record.permit != null" >
+        permit = #{record.permit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.auditFlag != null" >
+        audit_flag = #{record.auditFlag,jdbcType=INTEGER},
+      </if>
+      <if test="record.successDate != null" >
+        success_date = #{record.successDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update project
+    set id = #{record.id,jdbcType=BIGINT},
+      project_name = #{record.projectName,jdbcType=VARCHAR},
+      location = #{record.location,jdbcType=VARCHAR},
+      land_area = #{record.landArea,jdbcType=BIGINT},
+      build_area = #{record.buildArea,jdbcType=BIGINT},
+      floor = #{record.floor,jdbcType=INTEGER},
+      eia_people = #{record.eiaPeople,jdbcType=VARCHAR},
+      permit = #{record.permit,jdbcType=VARCHAR},
+      audit_flag = #{record.auditFlag,jdbcType=INTEGER},
+      success_date = #{record.successDate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ms.entity.Project" >
+    update project
+    <set >
+      <if test="projectName != null" >
+        project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null" >
+        location = #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="landArea != null" >
+        land_area = #{landArea,jdbcType=BIGINT},
+      </if>
+      <if test="buildArea != null" >
+        build_area = #{buildArea,jdbcType=BIGINT},
+      </if>
+      <if test="floor != null" >
+        floor = #{floor,jdbcType=INTEGER},
+      </if>
+      <if test="eiaPeople != null" >
+        eia_people = #{eiaPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="permit != null" >
+        permit = #{permit,jdbcType=VARCHAR},
+      </if>
+      <if test="auditFlag != null" >
+        audit_flag = #{auditFlag,jdbcType=INTEGER},
+      </if>
+      <if test="successDate != null" >
+        success_date = #{successDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ms.entity.Project" >
+    update project
+    set project_name = #{projectName,jdbcType=VARCHAR},
+      location = #{location,jdbcType=VARCHAR},
+      land_area = #{landArea,jdbcType=BIGINT},
+      build_area = #{buildArea,jdbcType=BIGINT},
+      floor = #{floor,jdbcType=INTEGER},
+      eia_people = #{eiaPeople,jdbcType=VARCHAR},
+      permit = #{permit,jdbcType=VARCHAR},
+      audit_flag = #{auditFlag,jdbcType=INTEGER},
+      success_date = #{successDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
