@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/ms_dao/ms_dao.iml" filepath="$PROJECT_DIR$/ms_dao/ms_dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ms_entity/ms_entity.iml" filepath="$PROJECT_DIR$/ms_entity/ms_entity.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ms_parent.iml" filepath="$PROJECT_DIR$/ms_parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ms_service/ms_service.iml" filepath="$PROJECT_DIR$/ms_service/ms_service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ms_utils/ms_utils.iml" filepath="$PROJECT_DIR$/ms_utils/ms_utils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ms_web/ms_web.iml" filepath="$PROJECT_DIR$/ms_web/ms_web.iml" />
+    </modules>
+  </component>
+</project>

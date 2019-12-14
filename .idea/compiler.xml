@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="ms_dao" />
+        <module name="ms_entity" />
+        <module name="ms_service" />
+        <module name="ms_utils" />
+        <module name="ms_web" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="ms_dao" target="1.7" />
+      <module name="ms_entity" target="1.7" />
+      <module name="ms_parent" target="1.7" />
+      <module name="ms_service" target="1.7" />
+      <module name="ms_utils" target="1.7" />
+      <module name="ms_web" target="1.7" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
